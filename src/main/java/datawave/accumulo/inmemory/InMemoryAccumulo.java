@@ -43,25 +43,25 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.io.Text;
 
 public class InMemoryAccumulo {
-
+    
     public static final String INSTANCE_NAME = "mock-instance";
-
+    
     public static class CachedConfiguration {
         private static Configuration configuration = null;
-
+        
         public static synchronized Configuration getInstance() {
             if (configuration == null)
                 setInstance(new Configuration());
             return configuration;
         }
-
+        
         public static synchronized Configuration setInstance(Configuration update) {
             Configuration result = configuration;
             configuration = update;
             return result;
         }
     }
-
+    
     static FileSystem getDefaultFileSystem() {
         try {
             Configuration conf = CachedConfiguration.getInstance();
@@ -72,7 +72,7 @@ public class InMemoryAccumulo {
             throw new RuntimeException(ex);
         }
     }
-
+    
     final Map<String,InMemoryTable> tables = new HashMap<>();
     final Map<String,InMemoryNamespace> namespaces = new HashMap<>();
     final Map<String,String> systemProperties = new HashMap<>();
@@ -80,15 +80,15 @@ public class InMemoryAccumulo {
     final FileSystem fs;
     final AtomicInteger tableIdCounter = new AtomicInteger(0);
     final String instanceName;
-
+    
     public InMemoryAccumulo() {
         this(INSTANCE_NAME, getDefaultFileSystem());
     }
-
+    
     public InMemoryAccumulo(String instanceName) {
         this(instanceName, getDefaultFileSystem());
     }
-
+    
     public InMemoryAccumulo(String instanceName, FileSystem fs) {
         InMemoryUser root = new InMemoryUser("root", new PasswordToken(new byte[0]), Authorizations.EMPTY);
         root.permissions.add(SystemPermission.SYSTEM);
@@ -101,40 +101,40 @@ public class InMemoryAccumulo {
         this.fs = fs;
         this.instanceName = instanceName;
     }
-
+    
     public FileSystem getFileSystem() {
         return fs;
     }
-
+    
     void setProperty(String key, String value) {
         systemProperties.put(key, value);
     }
-
+    
     String removeProperty(String key) {
         return systemProperties.remove(key);
     }
-
+    
     public void addMutation(String table, Mutation m) {
         InMemoryTable t = tables.get(table);
         t.addMutation(m);
     }
-
+    
     public BatchScanner createBatchScanner(String tableName, Authorizations authorizations) {
         return new InMemoryBatchScanner(tables.get(tableName), authorizations);
     }
-
+    
     public void createTable(String username, String tableName, boolean useVersions, TimeType timeType) {
         Map<String,String> opts = Collections.emptyMap();
         createTable(username, tableName, useVersions, timeType, opts);
     }
-
+    
     public void createTable(String username, String tableName, boolean useVersions, TimeType timeType, Map<String,String> properties) {
         String namespace = TableNameUtil.qualify(tableName).getFirst();
-
+        
         if (!namespaceExists(namespace)) {
             return;
         }
-
+        
         InMemoryNamespace n = namespaces.get(namespace);
         InMemoryTable t = new InMemoryTable(n, useVersions, timeType, Integer.toString(tableIdCounter.incrementAndGet()), properties);
         t.userPermissions.put(username, EnumSet.allOf(TablePermission.class));
@@ -142,15 +142,15 @@ public class InMemoryAccumulo {
         t.setNamespace(n);
         tables.put(tableName, t);
     }
-
+    
     public void createTable(String username, String tableName, TimeType timeType, Map<String,String> properties) {
         String namespace = TableNameUtil.qualify(tableName).getFirst();
         HashMap<String,String> props = new HashMap<>(properties);
-
+        
         if (!namespaceExists(namespace)) {
             return;
         }
-
+        
         InMemoryNamespace n = namespaces.get(namespace);
         InMemoryTable t = new InMemoryTable(n, timeType, Integer.toString(tableIdCounter.incrementAndGet()), props);
         t.userPermissions.put(username, EnumSet.allOf(TablePermission.class));
@@ -158,7 +158,7 @@ public class InMemoryAccumulo {
         t.setNamespace(n);
         tables.put(tableName, t);
     }
-
+    
     public void createNamespace(String username, String namespace) {
         if (!namespaceExists(namespace)) {
             InMemoryNamespace n = new InMemoryNamespace();
@@ -166,19 +166,19 @@ public class InMemoryAccumulo {
             namespaces.put(namespace, n);
         }
     }
-
+    
     public void addSplits(String tableName, SortedSet<Text> partitionKeys) {
         tables.get(tableName).addSplits(partitionKeys);
     }
-
+    
     public Collection<Text> getSplits(String tableName) {
         return tables.get(tableName).getSplits();
     }
-
+    
     public void merge(String tableName, Text start, Text end) {
         tables.get(tableName).merge(start, end);
     }
-
+    
     private boolean namespaceExists(String namespace) {
         return namespaces.containsKey(namespace);
     }

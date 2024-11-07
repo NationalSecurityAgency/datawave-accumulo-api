@@ -47,7 +47,8 @@ public class InMemoryConnector extends Connector {
     private final Instance instance;
     
     InMemoryConnector(String username, InMemoryInstance instance) throws AccumuloSecurityException {
-        this(new Credentials(username, new PasswordToken(new byte[0])), new InMemoryAccumulo(InMemoryInstance.getDefaultFileSystem()), instance);
+        this(new Credentials(username, new PasswordToken(new byte[0])), new InMemoryAccumulo(InMemoryInstance.getDefaultFileSystem().getCanonicalServiceName()),
+                        instance);
     }
     
     InMemoryConnector(Credentials credentials, InMemoryAccumulo acu, InMemoryInstance instance) throws AccumuloSecurityException {

@@ -56,7 +56,7 @@ public class InMemoryInstance implements Instance {
     String instanceName;
     
     public InMemoryInstance() {
-        acu = new InMemoryAccumulo(getDefaultFileSystem());
+        acu = new InMemoryAccumulo(getDefaultFileSystem().getCanonicalServiceName());
         instanceName = "mock-instance";
     }
     
@@ -80,7 +80,7 @@ public class InMemoryInstance implements Instance {
             if (instances.containsKey(instanceName))
                 acu = instances.get(instanceName);
             else
-                instances.put(instanceName, acu = new InMemoryAccumulo(fs));
+                instances.put(instanceName, acu = new InMemoryAccumulo(fs.getCanonicalServiceName()));
         }
         this.instanceName = instanceName;
     }
