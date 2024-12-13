@@ -74,12 +74,6 @@ public class InMemoryScannerBase extends ScannerOptions {
             this.auths = auths;
         }
         
-        @Override
-        public SortedKeyValueIterator<Key,Value> reserveMapFileReader(String mapFileName) throws IOException {
-            throw new UnsupportedOperationException();
-        }
-        
-        @Override
         public AccumuloConfiguration getConfig() {
             return DefaultConfiguration.getInstance();
         }
@@ -105,7 +99,6 @@ public class InMemoryScannerBase extends ScannerOptions {
         
         private ArrayList<SortedKeyValueIterator<Key,Value>> topLevelIterators = new ArrayList<>();
         
-        @Override
         public void registerSideChannel(SortedKeyValueIterator<Key,Value> iter) {
             topLevelIterators.add(iter);
         }
