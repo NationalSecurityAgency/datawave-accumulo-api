@@ -119,11 +119,6 @@ class InMemoryInstanceOperations implements InstanceOperations {
     public void waitForBalance() throws AccumuloException {}
     
     @Override
-    public String getInstanceID() {
-        return "in-memory-instance";
-    }
-    
-    @Override
     public InstanceId getInstanceId() {
         return InstanceId.of("in-memory-instance");
     }

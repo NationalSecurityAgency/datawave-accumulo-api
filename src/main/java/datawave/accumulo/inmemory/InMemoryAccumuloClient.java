@@ -32,7 +32,6 @@ import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.admin.InstanceOperations;
 import org.apache.accumulo.core.client.admin.NamespaceOperations;
-import org.apache.accumulo.core.client.admin.ReplicationOperations;
 import org.apache.accumulo.core.client.admin.SecurityOperations;
 import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
@@ -158,12 +157,6 @@ public class InMemoryAccumuloClient extends ClientContext implements AccumuloCli
     
     @Override
     public ConditionalWriter createConditionalWriter(String tableName, ConditionalWriterConfig config) {
-        // TODO add implementation
-        throw new UnsupportedOperationException();
-    }
-    
-    @Override
-    public ReplicationOperations replicationOperations() {
         // TODO add implementation
         throw new UnsupportedOperationException();
     }

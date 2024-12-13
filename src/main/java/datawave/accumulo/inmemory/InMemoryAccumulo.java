@@ -31,7 +31,6 @@ import org.apache.accumulo.core.clientImpl.Namespace;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.metadata.MetadataTable;
 import org.apache.accumulo.core.metadata.RootTable;
-import org.apache.accumulo.core.replication.ReplicationTable;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.accumulo.core.security.NamespacePermission;
 import org.apache.accumulo.core.security.SystemPermission;
@@ -56,7 +55,6 @@ public class InMemoryAccumulo {
         namespaces.put(Namespace.ACCUMULO.name(), new InMemoryNamespace());
         createTable("root", RootTable.NAME, true, TimeType.LOGICAL);
         createTable("root", MetadataTable.NAME, true, TimeType.LOGICAL);
-        createTable("root", ReplicationTable.NAME, true, TimeType.LOGICAL);
         this.fs = fs;
     }
     
