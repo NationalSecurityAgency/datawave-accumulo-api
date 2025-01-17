@@ -16,6 +16,7 @@
  */
 package datawave.accumulo.inmemory;
 
+import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.accumulo.core.client.AccumuloClient;
@@ -53,7 +54,7 @@ public class InMemoryAccumuloClient extends ClientContext implements AccumuloCli
     }
     
     public InMemoryAccumuloClient(Credentials credentials, InMemoryAccumulo acu) throws AccumuloSecurityException {
-        super(SingletonReservation.noop(), new InMemoryClientInfo(credentials), DefaultConfiguration.getInstance(), null);
+        super(SingletonReservation.noop(), new InMemoryClientInfo(credentials, Optional.empty()), DefaultConfiguration.getInstance(), null);
         if (credentials.getToken().isDestroyed())
             throw new AccumuloSecurityException(credentials.getPrincipal(), SecurityErrorCode.TOKEN_EXPIRED);
         this.username = credentials.getPrincipal();

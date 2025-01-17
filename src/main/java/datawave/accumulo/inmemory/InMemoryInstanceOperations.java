@@ -17,6 +17,7 @@
 package datawave.accumulo.inmemory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.List;
@@ -93,7 +94,7 @@ class InMemoryInstanceOperations implements InstanceOperations {
     }
     
     @Override
-    public ServerId getServer(ServerId.Type type, String resourceGroup, String host, int port) {
+    public ServerId getServer(ServerId.Type type, String s, String s1, int i) {
         return null;
     }
     
@@ -113,7 +114,7 @@ class InMemoryInstanceOperations implements InstanceOperations {
     }
     
     @Override
-    public List<ActiveScan> getActiveScans(ServerId server) throws AccumuloException, AccumuloSecurityException {
+    public List<ActiveScan> getActiveScans(Collection<ServerId> collection) throws AccumuloException, AccumuloSecurityException {
         return List.of();
     }
     
@@ -134,13 +135,13 @@ class InMemoryInstanceOperations implements InstanceOperations {
     }
     
     @Override
-    public List<ActiveCompaction> getActiveCompactions(ServerId server) throws AccumuloException, AccumuloSecurityException {
-        return List.of();
+    public List<ActiveCompaction> getActiveCompactions() throws AccumuloException, AccumuloSecurityException {
+        return new ArrayList<>();
     }
     
     @Override
-    public List<ActiveCompaction> getActiveCompactions() throws AccumuloException, AccumuloSecurityException {
-        return new ArrayList<>();
+    public List<ActiveCompaction> getActiveCompactions(Collection<ServerId> collection) throws AccumuloException, AccumuloSecurityException {
+        return List.of();
     }
     
     @Override
